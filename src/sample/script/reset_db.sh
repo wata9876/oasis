@@ -1,0 +1,1 @@
+mysql -u root -p katsu315 < C:/Go/dev/src/sample/script/reset_db.sql
