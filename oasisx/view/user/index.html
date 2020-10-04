@@ -1,0 +1,9 @@
+<html>
+<p>ユーザー一覧</p>
+<ul>{{range .}}
+    
+  <a href="/user/edit/{{.ID}}">{{.Name}}</a><br/>
+  {{end}} 
+  <a href="/user/new">新規登録</a>      
+  </ul>
+</html>
