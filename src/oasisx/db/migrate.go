@@ -10,7 +10,7 @@ import (
 func main() {
 	DBMS := "mysql"
 	USER := "root"
-	PASS := "katsu315"
+	PASS := "1234"
 	PROTOCOL := "tcp(127.0.0.1:3306)"
 	DBNAME := "oasis"
 
