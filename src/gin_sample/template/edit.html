@@ -1,0 +1,24 @@
+<html>
+  <p>書籍更新</p>
+  <form method="post" action="/book/update/{{.id}}" >
+    <input type="hidden" name="id" value={{.id}} />
+    <label>
+        タイトル
+        <input type="text" name="title" value={{.title}} />
+    </label>
+    <br>
+    <label>
+        著者名    
+        <input type="text" name="author" value={{.author}} />
+    </label>
+    <br>
+    <label>
+        内容    
+        <input type="text" name="content" value={{.content}} />
+    </label>
+    <input type="submit" name="Submit" value="更新" /><br/>
+    <a href="/user/delete/{{.ID}}">削除</a> 
+  </form>
+<br/>
+  <a href="/book/list">back</a>
+</html>
