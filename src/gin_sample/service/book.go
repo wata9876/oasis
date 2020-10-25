@@ -1,10 +1,12 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"gin_sample/model"
+	"log"
 
-	//_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/go-xorm/xorm"
 )
@@ -23,8 +25,9 @@ type Book struct {
 	content string `xorm:"'content'"`
 }
 
-//SetBook エラーチェック
-func (BookService) SetBook(book *model.Book) error {
+//AddBook 登録処理
+func (BookService) AddBook(book *model.Book) error {
+
 	_, err := DbEngine.Insert(book)
 	if err != nil {
 		return err
@@ -34,10 +37,8 @@ func (BookService) SetBook(book *model.Book) error {
 
 //GetBookList 一覧表示
 func (BookService) GetBookList() []model.Book {
-	fmt.Println("サービスクラス通っているaa")
 	books := make([]model.Book, 0)
 	DbEngine.Find(&books)
-	fmt.Println(books)
 	return books
 }
 
@@ -49,4 +50,21 @@ func (BookService) DeleteBook(id int) error {
 		return err
 	}
 	return nil
+}
+
+//init DB初期化
+func init() {
+
+	driverName := "mysql"
+	DsName := "root:katsu315@tcp(127.0.0.1:3306)/example?parseTime=true&charset=utf8"
+
+	err := errors.New("")
+	DbEngine, err = xorm.NewEngine(driverName, DsName)
+	if err != nil && err.Error() != "" {
+		log.Fatal(err.Error())
+	}
+	//DbEngine.ShowSQL(true)
+	//DbEngine.SetMaxOpenConns(2)
+	//DbEngine.Sync2(new(model.Book))
+	fmt.Println("init data base ok")
 }

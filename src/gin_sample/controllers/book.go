@@ -3,9 +3,11 @@ package controllers
 import (
 	"errors"
 	"fmt"
-	"gin_test/service"
+	"gin_sample/model"
+	"gin_sample/service"
 	"html/template"
 	"log"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -26,37 +28,47 @@ type Book struct {
 }
 
 //BookList 全件
-// func BookList(c *gin.Context) {
-// 	bookService := service.BookService{}
-// 	BookLists := bookService.GetBookList()
-// 	c.HTML(200, "index.html", gin.H{"books": BookLists})
-// }
-//BookList 全件
 func BookList(c *gin.Context) {
-
-	books := make([]Book, 0)
-	DbEngine.Find(&books)
-	fmt.Println(books)
-
-	c.HTML(200, "index.html", gin.H{"books": books})
+	bookService := service.BookService{}
+	BookLists := bookService.GetBookList()
+	c.HTML(200, "index.html", gin.H{"books": BookLists})
 }
-
-//BookNew 新規作成画面
-// func BookNew(c *gin.Context) {
-// 	c.HTML(200, "new.html", gin.H{})
-// }
 
 //BookAdd 新規登録
 func BookAdd(c *gin.Context) {
-	book := new(Book)
+	book := model.Book{}
 	book.Title = c.PostForm("title")
 	book.Author = c.PostForm("author")
 	book.Content = c.PostForm("content")
 
-	DbEngine.Insert(book)
+	err := c.Bind(&book)
+	if err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
 
+	bookService := service.BookService{}
+	err = bookService.AddBook(&book)
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Server Error")
+		return
+	}
 	c.Redirect(302, "/book/list")
 }
+
+// func BookAdd(c *gin.Context) {
+
+// 	book := new(Book)
+// 	book.Title = c.PostForm("title")
+// 	book.Author = c.PostForm("author")
+// 	book.Content = c.PostForm("content")
+
+// 	bookService := service.BookService{}
+// 	bookService.AddBook(c)
+// 	//DbEngine.Insert(book)
+
+// 	c.Redirect(302, "/book/list")
+// }
 
 //BookEdit 更新処理
 func BookEdit(c *gin.Context) {

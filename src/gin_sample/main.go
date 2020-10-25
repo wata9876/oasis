@@ -2,6 +2,7 @@ package main
 
 import (
 	"gin_test/controllers"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -10,11 +11,11 @@ import (
 func main() {
 	router := gin.Default()
 	router.LoadHTMLGlob("template/*.html")
-	// router.GET("/login", func(c *gin.Context) {
-	// 	//router.LoadHTMLGlob("templates/auth/*")
-	// 	c.HTML(http.StatusOK, "login.html", gin.H{})
-	// })
-	// router.POST("/login", controllers.PostLogin)
+	router.GET("/login", func(c *gin.Context) {
+		//router.LoadHTMLGlob("templates/auth/*")
+		c.HTML(http.StatusOK, "login.html", gin.H{})
+	})
+	router.POST("/login", controllers.PostLogin)
 
 	router.GET("/top", func(c *gin.Context) {
 		//router.LoadHTMLGlob("template/menu/*")
@@ -28,7 +29,6 @@ func main() {
 			c.HTML(200, "new.html", gin.H{})
 		})
 
-		
 	}
 	router.POST("/book/add", controllers.BookAdd)
 	router.GET("book/edit/:id", controllers.BookEdit)
