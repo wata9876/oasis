@@ -1,14 +1,23 @@
 package service
 
-//_ "github.com/go-sql-driver/mysql"
+import (
+	"fmt"
+	"log"
+
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
+)
 
 //AuthService 認証構造体定義
 type AuthService struct {
 }
 
-//LoginCheck 書籍更新
-// func (AuthService) LoginCheck(id string) error {
-
-// 	fmt.Println("サービスまで通っている")
-// 	fmt.Println(id)
-// }
+//SetSessionInfo セッション情報を格納
+func (AuthService) SetSessionInfo(c *gin.Context, userID int) {
+	log.Println("セッション情報を格納")
+	fmt.Println(userID)
+	session := sessions.Default(c)
+	session.Set("alive", true)
+	session.Set("userID", userID)
+	session.Save()
+}

@@ -18,7 +18,7 @@ var DbEngine *xorm.Engine
 func main() {
 	err := godotenv.Load(fmt.Sprintf("../%s.env", os.Getenv("GO_ENV")))
 	if err != nil {
-		// .env読めなかった場合の処理
+		log.Println("DB読み込み失敗")
 	}
 
 	DBMS := os.Getenv("DBMS")
@@ -26,12 +26,12 @@ func main() {
 	PASS := os.Getenv("PASS")
 	PROTOCOL := os.Getenv("PROTOCOL")
 	DBNAME := os.Getenv("DBNAME")
-	//fmt.Println(DBMS) // local
+
 	url := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
-	//fmt.Println(url)
 	DbEngine, err = xorm.NewEngine(DBMS, url)
 
 	err = DbEngine.CreateTables(models.Book{})
+	err = DbEngine.CreateTables(models.User{})
 	if err != nil {
 		log.Fatalf("テーブルの生成に失敗しました。: %v", err)
 	}

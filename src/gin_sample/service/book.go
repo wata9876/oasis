@@ -20,7 +20,7 @@ type BookService struct {
 
 //Book bookテーブル
 type Book struct {
-	ID      int64  `xorm:"'id'"`
+	ID      int    `xorm:"'id'"`
 	title   string `xorm:"'title'"`
 	content string `xorm:"'content'"`
 }

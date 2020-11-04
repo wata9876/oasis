@@ -56,29 +56,14 @@ func BookAdd(c *gin.Context) {
 	c.Redirect(302, "/book/list")
 }
 
-// func BookAdd(c *gin.Context) {
-
-// 	book := new(Book)
-// 	book.Title = c.PostForm("title")
-// 	book.Author = c.PostForm("author")
-// 	book.Content = c.PostForm("content")
-
-// 	bookService := service.BookService{}
-// 	bookService.AddBook(c)
-// 	//DbEngine.Insert(book)
-
-// 	c.Redirect(302, "/book/list")
-// }
-
 //BookEdit 更新処理
 func BookEdit(c *gin.Context) {
 
 	n := c.Param("id")
 	id, _ := strconv.Atoi(n)
-	//fmt.Println(id)
 	book := Book{ID: id}
 	DbEngine.Get(&book)
-	//fmt.Println(book.Title)
+
 	c.HTML(200, "edit.html",
 		gin.H{
 			"id":      book.ID,
@@ -90,7 +75,7 @@ func BookEdit(c *gin.Context) {
 
 //BookUpdate 書籍更新
 func BookUpdate(c *gin.Context) {
-	fmt.Println("update通っている")
+
 	book := new(Book)
 
 	id := c.PostForm("id")
@@ -98,10 +83,8 @@ func BookUpdate(c *gin.Context) {
 	book.Title = c.PostForm("title")
 	book.Author = c.PostForm("author")
 	book.Content = c.PostForm("content")
-	fmt.Println(book.Title)
-	DbEngine.Where("i_d = ?", id).Update(book)
 
-	//DbEngine.Where("i_d = ?", id).Update(&book)
+	DbEngine.Where("i_d = ?", id).Update(book)
 	c.Redirect(302, "/book/list")
 }
 
@@ -113,23 +96,9 @@ func BookDelete(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(id)
-	fmt.Println("削除")
-	// intID, err := strconv.ParseInt(id, 10, 0)
-	// if err != nil {
-	// 	c.String(http.StatusBadRequest, "Bad request")
-	// 	return
-	// }
-
 	bookService := service.BookService{}
 	bookService.DeleteBook(int(id))
 
-	// c.JSON(http.StatusCreated, gin.H{
-	// 	"status": "ok",
-	// })
-
-	//book := new(Book)
-	//DbEngine.Where("i_d = ?", id).Delete(book)
 	c.Redirect(302, "/book/list")
 }
 

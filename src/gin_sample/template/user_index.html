@@ -1,0 +1,29 @@
+<html>
+<h1>ユーザー一覧</h1>
+<a href="new">新規作成</a><br>
+<table>
+<tr>
+    <th>ID</th>
+    <th>名前</th>
+    <th>年齢</th>
+</tr>
+{{ range .users }}
+<form action="/user/edit/{{.ID}}" method="get">
+    <input type="hidden" name="id" value="{{ .ID }}" />
+    <tr>
+        <td>{{ .ID }}</td>
+        <td>{{ .Name }}</td>
+        <td>{{ .Age }}</td>
+        <td>{{ .Address }}</td>
+        <td><input type="submit" value="更新" /></td>
+        <td><a href="/user/delete/{{.ID}}">削除</a></td>
+    </tr>
+</form>
+{{end}}
+</table>
+
+
+
+
+
+</html>
