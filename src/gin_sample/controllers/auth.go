@@ -23,14 +23,14 @@ func PostLogin(c *gin.Context) {
 	log.Println("ログイン処理")
 	address := c.PostForm("address")
 	password := c.PostForm("password")
-
+	log.Println(password)
 	if password == "" {
 		log.Println("パスワードは必須です")
 		return
 	}
 	UserService := service.UserService{}
 	isExist, user := UserService.GetLoginUser(address)
-
+	log.Println(isExist)
 	//認証出来たらセッションに登録
 	if isExist {
 		AuthService := service.AuthService{}

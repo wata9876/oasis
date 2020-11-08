@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="jp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ログイン</title>
+        <!-- BootstrapのCSS読み込み -->
+        <link href="public/css/bootstrap.min.css" rel="stylesheet">
+        <!-- jQuery読み込み -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- BootstrapのJS読み込み -->
+        <script src="public/js/bootstrap.min.js"></script>
+      </head>
+<body>
+<form action="/login" method="POST">
+    <h1>ログイン</h1>
+
+    <!-- Eメール入力エリア -->
+  <div class="form-group">
+    <label class="col-sm-2 col-form-label">メールアドレス</label>
+        <div class="col-md-3">
+            <input type="address" class="form-control" id="address" name="address" value="{{.address}}" placeholder="Email">
+        </div>
+</div>
+    <!-- パスワード入力エリア -->
+    <div class="form-group">
+        <label class="col-sm-2 col-form-label">パスワード</label>
+        <div class="col-md-3">
+            <input type="password" class="form-control" id="password" name="password" value="{{.password}}" placeholder="Password">
+        </div>
+    </div>
+    <p><input type="submit" class="btn btn-primary" value="ログイン"></p>
+</form>
+</body>
+</html>

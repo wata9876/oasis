@@ -1,12 +1,13 @@
 package service
 
 import (
-	"database/sql"
 	"errors"
 	"fmt"
 	"gin_sample/model"
 	"log"
+	"strconv"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
 	"golang.org/x/crypto/bcrypt"
@@ -18,9 +19,9 @@ type UserService struct {
 
 //User userテーブル
 type User struct {
-	ID      int            `json:"id" xorm:"'i_d'"`
-	Name    sql.NullString `xorm:"name"` // name
-	Age     int            `xorm:"age"`  // age
+	ID      int    `json:"id" xorm:"'i_d'"`
+	Name    string `xorm:"name"` // name
+	Age     int    `xorm:"age"`  // age
 	Address string
 }
 
@@ -75,6 +76,25 @@ func (UserService) GetLoginUser(address string) (bool, User) {
 	}
 
 	return isExist, user
+}
+
+// EditUser ユーザー更新
+func (UserService) EditUser(id int) User {
+	user := User{ID: id}
+	DbEngine.Get(&user)
+	return user
+}
+
+// UpdateUser ユーザー更新
+func (UserService) UpdateUser(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	user := new(User)
+	user.Name = c.PostForm("name")
+	user.Age, _ = strconv.Atoi(c.PostForm("age"))
+	user.Address = c.PostForm("address")
+
+	DbEngine.Where("i_d = ?", id).Update(user)
 }
 
 //init DB初期化

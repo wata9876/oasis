@@ -8,7 +8,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -59,10 +58,12 @@ func BookAdd(c *gin.Context) {
 //BookEdit 更新処理
 func BookEdit(c *gin.Context) {
 
-	n := c.Param("id")
-	id, _ := strconv.Atoi(n)
-	book := Book{ID: id}
-	DbEngine.Get(&book)
+	id, err := PostParamID(c.Param("id"))
+	if err != nil {
+		log.Println("ID取得失敗")
+	}
+	BookService := service.BookService{}
+	book := BookService.EditBook(int(id))
 
 	c.HTML(200, "edit.html",
 		gin.H{
@@ -79,7 +80,6 @@ func BookUpdate(c *gin.Context) {
 	book := new(Book)
 
 	id := c.PostForm("id")
-	fmt.Println(id)
 	book.Title = c.PostForm("title")
 	book.Author = c.PostForm("author")
 	book.Content = c.PostForm("content")
@@ -91,11 +91,11 @@ func BookUpdate(c *gin.Context) {
 //BookDelete 書籍削除
 func BookDelete(c *gin.Context) {
 
-	n := c.Param("id")
-	id, err := strconv.Atoi(n)
+	id, err := PostParamID(c.Param("id"))
 	if err != nil {
-		panic(err)
+		log.Println("ID取得失敗")
 	}
+
 	bookService := service.BookService{}
 	bookService.DeleteBook(int(id))
 

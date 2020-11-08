@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bootstrap Sample</title>
+        <!-- BootstrapのCSS読み込み -->
+        <link href="public/css/bootstrap.min.css" rel="stylesheet">
+        <!-- jQuery読み込み -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- BootstrapのJS読み込み -->
+        <script src="public/js/bootstrap.min.js"></script>
+        </head>
+        <body>
+            <h1>書籍一覧</h1>
+            <a href="new">新規作成</a><br>
+            <div class="container">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>タイトル</th>
+                        <th>著者名</th>
+                        <th>内容</th>
+                    </tr>
+                    <thead>
+                    <tbody>
+            {{ range .books }}
+            <form action="/book/edit/{{.ID}}" method="get">
+                <input type="hidden" name="id" value="{{ .ID }}" />
+                <tr>
+                    <td>{{ .ID }}</td>
+                    <td>{{ .Title }}</td>
+                    <td>{{ .Author }}</td>
+                    <td>{{ .Content }}</td>
+                    <td><input type="submit" value="更新" /></td>
+                    <td><a href="/book/delete/{{.ID}}">削除</a></td>
+                </tr>
+            </form>
+            {{end}}
+            <tbody>
+            </table>
+            <p><a href="/menu/top">メニューに戻る</a></p>
+            <p><a href="/logout">ログアウト</a></p>
+        </body>
+</html>

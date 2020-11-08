@@ -20,9 +20,10 @@ type BookService struct {
 
 //Book bookテーブル
 type Book struct {
-	ID      int    `xorm:"'id'"`
-	title   string `xorm:"'title'"`
-	content string `xorm:"'content'"`
+	ID      int    `xorm:"'i_d'"`
+	Title   string `xorm:"'title'"`
+	Author  string `xorm:"'author'"`
+	Content string `xorm:"'content'"`
 }
 
 //AddBook 登録処理
@@ -40,6 +41,14 @@ func (BookService) GetBookList() []model.Book {
 	books := make([]model.Book, 0)
 	DbEngine.Find(&books)
 	return books
+}
+
+// EditBook 更新
+func (BookService) EditBook(id int) Book {
+	book := Book{ID: id}
+	DbEngine.Get(&book)
+	fmt.Println(book)
+	return book
 }
 
 //DeleteBook 削除

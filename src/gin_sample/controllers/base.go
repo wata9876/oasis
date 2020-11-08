@@ -27,6 +27,7 @@ func responseByJSON(w http.ResponseWriter, data interface{}) {
 	return
 }
 
+//SessionCheck セッション管理
 func SessionCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
 

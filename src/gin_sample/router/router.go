@@ -12,8 +12,24 @@ import (
 //GetRouter ルートを定義
 func GetRouter() *gin.Engine {
 	router := gin.Default()
-	router.LoadHTMLGlob("template/*.html")
+	router.LoadHTMLGlob("public/template/*.html")
 
+	//bootstrap
+	//loginDesign := router.Group("/login")
+	router.Static("public/css", "public/css")
+	router.Static("public/js", "public/js")
+
+	userDesign := router.Group("/user")
+	userDesign.Static("public/css", "public/css")
+	userDesign.Static("public/js", "public/js")
+
+	bookDesign := router.Group("/book")
+	bookDesign.Static("public/css", "public/css")
+	bookDesign.Static("public/js", "public/js")
+
+	// router.GET("/test", func(c *gin.Context) {
+	// 	c.HTML(http.StatusOK, "bootstrap.html", gin.H{})
+	// })
 	// セッション
 	store := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
@@ -41,6 +57,9 @@ func GetRouter() *gin.Engine {
 			c.HTML(200, "user_new.html", gin.H{})
 		})
 		user.POST("/add", controllers.UserAdd)
+		user.GET("/edit/:id", controllers.UserEdit)
+		user.POST("/update/:id", controllers.UserUpdate)
+		user.GET("/delete/:id", controllers.UserDelete)
 	}
 
 	//書籍情報

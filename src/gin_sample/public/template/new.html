@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="jp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ログイン</title>
+        <!-- BootstrapのCSS読み込み -->
+        <link href="public/css/bootstrap.min.css" rel="stylesheet">
+        <!-- jQuery読み込み -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- BootstrapのJS読み込み -->
+        <script src="public/js/bootstrap.min.js"></script>
+      </head>
+    <body>
+      <h1>書籍登録</h1>
+      <form method="post" action="add" >
+          <!-- タイトル名入力エリア -->
+          <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label">タイトル名</label>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="email" name="title" value="{{.book.title}}">
+            </div>
+          </div>
+          <!-- 著者名入力エリア -->
+          <div class="form-group row">
+            <label for="author" class="col-sm-2 col-form-label">著者名</label>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="author" name="author" value="{{.book.author}}">
+            </div>
+          </div>
+          <!-- 内容入力エリア -->
+          <div class="form-group row">
+            <label for="content" class="col-sm-2 col-form-label">内容</label>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="content" name="content" value="{{.book.content}}">
+            </div>
+          </div>
+
+          <input type="submit" class="btn btn-outline-success btn-lg"　name="Submit" value="登録" /><br/>
+          {{.Mess}}
+        </form>
+        <a href="list">戻る</a>
+  </body>
+</html>
