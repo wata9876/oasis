@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"errors"
-	"fmt"
 	"gin_sample/model"
 	"gin_sample/service"
 	"html/template"
@@ -10,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
 )
 
@@ -64,7 +61,7 @@ func BookEdit(c *gin.Context) {
 	}
 	BookService := service.BookService{}
 	book := BookService.EditBook(int(id))
-
+	log.Println(book.Title)
 	c.HTML(200, "edit.html",
 		gin.H{
 			"id":      book.ID,
@@ -76,15 +73,8 @@ func BookEdit(c *gin.Context) {
 
 //BookUpdate 書籍更新
 func BookUpdate(c *gin.Context) {
-
-	book := new(Book)
-
-	id := c.PostForm("id")
-	book.Title = c.PostForm("title")
-	book.Author = c.PostForm("author")
-	book.Content = c.PostForm("content")
-
-	DbEngine.Where("i_d = ?", id).Update(book)
+	BookService := service.BookService{}
+	BookService.UpdateBook(c)
 	c.Redirect(302, "/book/list")
 }
 
@@ -103,18 +93,18 @@ func BookDelete(c *gin.Context) {
 }
 
 //init DB初期化
-func init() {
+// func init() {
 
-	driverName := "mysql"
-	DsName := "root:katsu315@tcp(127.0.0.1:3306)/example?parseTime=true&charset=utf8"
+// 	driverName := "mysql"
+// 	DsName := "root:katsu315@tcp(127.0.0.1:3306)/example?parseTime=true&charset=utf8"
 
-	err := errors.New("")
-	DbEngine, err = xorm.NewEngine(driverName, DsName)
-	if err != nil && err.Error() != "" {
-		log.Fatal(err.Error())
-	}
-	//DbEngine.ShowSQL(true)
-	//DbEngine.SetMaxOpenConns(2)
-	//DbEngine.Sync2(new(model.Book))
-	fmt.Println("init data base ok")
-}
+// 	err := errors.New("")
+// 	DbEngine, err = xorm.NewEngine(driverName, DsName)
+// 	if err != nil && err.Error() != "" {
+// 		log.Fatal(err.Error())
+// 	}
+// 	//DbEngine.ShowSQL(true)
+// 	//DbEngine.SetMaxOpenConns(2)
+// 	//DbEngine.Sync2(new(model.Book))
+// 	fmt.Println("init data base ok")
+// }

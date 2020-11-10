@@ -6,11 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Bootstrap Sample</title>
         <!-- BootstrapのCSS読み込み -->
-        <link href="public/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <!-- jQuery読み込み -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- BootstrapのJS読み込み -->
-        <script src="public/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
         </head>
         <body>
             <h1>書籍一覧</h1>
@@ -23,11 +23,13 @@
                         <th>タイトル</th>
                         <th>著者名</th>
                         <th>内容</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     <thead>
                     <tbody>
             {{ range .books }}
-            <form action="/book/edit/{{.ID}}" method="get">
+            <form method="GET" action="/book/edit/{{.ID}}">
                 <input type="hidden" name="id" value="{{ .ID }}" />
                 <tr>
                     <td>{{ .ID }}</td>

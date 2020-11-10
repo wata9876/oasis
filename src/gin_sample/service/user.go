@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
+	"gin_sample/db"
 	"gin_sample/model"
 	"log"
 	"strconv"
@@ -100,15 +101,15 @@ func (UserService) UpdateUser(c *gin.Context) {
 //init DB初期化
 func init() {
 
-	driverName := "mysql"
-	DsName := "root:katsu315@tcp(127.0.0.1:3306)/example?parseTime=true&charset=utf8"
+	DB := db.Dbinit{}
+	driverName, url := DB.GetDbInfo()
 
 	err := errors.New("")
-	DbEngine, err = xorm.NewEngine(driverName, DsName)
+	DbEngine, err = xorm.NewEngine(driverName, url)
 	if err != nil && err.Error() != "" {
 		log.Fatal(err.Error())
 	}
-	//DbEngine.ShowSQL(true)
+	DbEngine.ShowSQL(true)
 	//DbEngine.SetMaxOpenConns(2)
 	//DbEngine.Sync2(new(model.User))
 	fmt.Println("init data base ok")

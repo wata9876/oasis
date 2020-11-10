@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap Sample</title>
+    <!-- BootstrapのCSS読み込み -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- jQuery読み込み -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- BootstrapのJS読み込み -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </head>
+      <body>
+        <p>書籍更新</p>
+        <form method="post" action="/book/update/{{.id}}" >
+          <input type="hidden" name="id" value={{.id}} />
+          <!-- タイトル名入力エリア -->
+          <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label">タイトル名</label>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="title" name="title" value="{{.title}}">
+            </div>
+          </div>
+          <!-- 著者名入力エリア -->
+          <div class="form-group row">
+            <label for="author" class="col-sm-2 col-form-label">著者名</label>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="author" name="author" value="{{.author}}">
+            </div>
+          </div>
+          <!-- 内容入力エリア -->
+          <div class="form-group row">
+            <label for="content" class="col-sm-2 col-form-label">内容</label>
+            <div class="col-md-3">
+              <input type="text" class="form-control" id="content" name="content" value="{{.content}}">
+            </div>
+          </div>
+          <input type="submit" name="Submit" value="更新" /><br/>
+          <a href="/book/delete/{{.ID}}">削除</a> 
+        </form>
+        <br/>
+        <a href="/book/list">戻る</a>
+    </body>
+</html>

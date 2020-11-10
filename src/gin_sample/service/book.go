@@ -3,9 +3,13 @@ package service
 import (
 	"errors"
 	"fmt"
+	"strconv"
+
+	"gin_sample/db"
 	"gin_sample/model"
 	"log"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/go-xorm/xorm"
@@ -51,6 +55,19 @@ func (BookService) EditBook(id int) Book {
 	return book
 }
 
+// UpdateBook 書籍更新
+func (BookService) UpdateBook(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	book := new(Book)
+
+	book.Title = c.PostForm("title")
+	book.Author = c.PostForm("author")
+	book.Content = c.PostForm("content")
+
+	DbEngine.Where("i_d = ?", id).Update(book)
+}
+
 //DeleteBook 削除
 func (BookService) DeleteBook(id int) error {
 	book := new(model.Book)
@@ -64,16 +81,12 @@ func (BookService) DeleteBook(id int) error {
 //init DB初期化
 func init() {
 
-	driverName := "mysql"
-	DsName := "root:katsu315@tcp(127.0.0.1:3306)/example?parseTime=true&charset=utf8"
-
+	DB := db.Dbinit{}
+	driverName, url := DB.GetDbInfo()
 	err := errors.New("")
-	DbEngine, err = xorm.NewEngine(driverName, DsName)
+	DbEngine, err = xorm.NewEngine(driverName, url)
 	if err != nil && err.Error() != "" {
 		log.Fatal(err.Error())
 	}
-	//DbEngine.ShowSQL(true)
-	//DbEngine.SetMaxOpenConns(2)
-	//DbEngine.Sync2(new(model.Book))
 	fmt.Println("init data base ok")
 }

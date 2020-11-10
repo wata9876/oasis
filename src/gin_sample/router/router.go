@@ -12,30 +12,21 @@ import (
 //GetRouter ルートを定義
 func GetRouter() *gin.Engine {
 	router := gin.Default()
-	router.LoadHTMLGlob("public/template/*.html")
+	router.LoadHTMLGlob("template/*.html")
 
-	//bootstrap
-	//loginDesign := router.Group("/login")
-	router.Static("public/css", "public/css")
-	router.Static("public/js", "public/js")
+	router.Static("book/assets/css", "assets/css")
+	router.Static("user/assets/css", "assets/css")
 
-	userDesign := router.Group("/user")
-	userDesign.Static("public/css", "public/css")
-	userDesign.Static("public/js", "public/js")
+	//router.Static("assets/css", "assets/css")
+	//router.Static("assets/js", "assets/js")
 
-	bookDesign := router.Group("/book")
-	bookDesign.Static("public/css", "public/css")
-	bookDesign.Static("public/js", "public/js")
-
-	// router.GET("/test", func(c *gin.Context) {
-	// 	c.HTML(http.StatusOK, "bootstrap.html", gin.H{})
-	// })
 	// セッション
 	store := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
 
 	//認証
 	router.GET("/login", func(c *gin.Context) {
+		router.LoadHTMLGlob("template/*.html")
 		c.HTML(http.StatusOK, "login.html", gin.H{})
 	})
 	router.POST("/login", controllers.PostLogin)
@@ -45,33 +36,63 @@ func GetRouter() *gin.Engine {
 	menu := router.Group("/menu")
 	menu.Use(controllers.SessionCheck())
 	{
-		menu.GET("/top", controllers.GetMenu)
+
+		//menu.GET("/top", controllers.GetMenu)
+		menu.GET("/top", func(c *gin.Context) {
+			router.LoadHTMLGlob("template/menu/*.html")
+			controllers.GetMenu(c)
+		})
 	}
 
 	//ユーザー情報
 	user := router.Group("/user")
 	user.Use(controllers.SessionCheck())
 	{
-		user.GET("/list", controllers.UserList)
+		//user.GET("/list", controllers.UserList)
+		user.GET("/list", func(c *gin.Context) {
+			router.LoadHTMLGlob("template/user/*.html")
+			controllers.UserList(c)
+		})
+
 		user.GET("/new", func(c *gin.Context) {
-			c.HTML(200, "user_new.html", gin.H{})
+			router.LoadHTMLGlob("template/user/*.html")
+			c.HTML(200, "new.html", gin.H{})
 		})
 		user.POST("/add", controllers.UserAdd)
-		user.GET("/edit/:id", controllers.UserEdit)
+		//user.GET("/edit/:id", controllers.UserEdit)
+		user.GET("/edit/:id", func(c *gin.Context) {
+
+			router.LoadHTMLGlob("template/user/*.html")
+			controllers.UserEdit(c)
+		})
 		user.POST("/update/:id", controllers.UserUpdate)
 		user.GET("/delete/:id", controllers.UserDelete)
 	}
 
 	//書籍情報
 	book := router.Group("/book")
+	//book.Static("/edit/:id", "assets/css")
 	book.Use(controllers.SessionCheck())
 	{
-		book.GET("/list", controllers.BookList)
+		//router.LoadHTMLGlob("assets/template/book/*.html")
+		// book.Static("assets/css", "assets/css")
+		// book.Static("assets/js", "assets/js")
+		book.GET("/list", func(c *gin.Context) {
+			router.LoadHTMLGlob("template/book/*.html")
+			controllers.BookList(c)
+		})
 		book.GET("/new", func(c *gin.Context) {
+			router.LoadHTMLGlob("template/book/*.html")
 			c.HTML(200, "new.html", gin.H{})
 		})
 		book.POST("/add", controllers.BookAdd)
-		book.GET("/edit/:id", controllers.BookEdit)
+		//book.GET("/edit/:id", controllers.BookEdit)
+		book.GET("/edit/:id", func(c *gin.Context) {
+
+			router.LoadHTMLGlob("template/book/*.html")
+			controllers.BookEdit(c)
+
+		})
 		book.POST("/update/:id", controllers.BookUpdate)
 		book.GET("/delete/:id", controllers.BookDelete)
 	}

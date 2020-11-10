@@ -9,7 +9,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 // DbEngine DB
@@ -20,7 +19,7 @@ var err error
 func UserList(c *gin.Context) {
 	userService := service.UserService{}
 	userLists := userService.GetUserList()
-	c.HTML(200, "user_index.html", gin.H{"users": userLists})
+	c.HTML(200, "index.html", gin.H{"users": userLists})
 }
 
 //UserAdd 新規登録
@@ -58,7 +57,7 @@ func UserEdit(c *gin.Context) {
 	}
 	userService := service.UserService{}
 	user := userService.EditUser(int(id))
-	c.HTML(200, "user_edit.html",
+	c.HTML(200, "edit.html",
 		gin.H{
 			"id":      user.ID,
 			"name":    user.Name,
@@ -69,30 +68,18 @@ func UserEdit(c *gin.Context) {
 
 //UserUpdate ユーザー更新
 func UserUpdate(c *gin.Context) {
-
-	//user := new(User)
-
-	// id := c.PostForm("id")
-	// user.Name = c.PostForm("name")
-	// n := c.PostForm("age")
-	// user.Age, _ = strconv.Atoi(n)
-	// user.Address = c.PostForm("address")
 	userService := service.UserService{}
 	userService.UpdateUser(c)
-	//DbEngine.Where("i_d = ?", id).Update(user)
 	c.Redirect(302, "/user/list")
 }
 
 //UserDelete ユーザー削除
 func UserDelete(c *gin.Context) {
-
 	id, err := PostParamID(c.Param("id"))
 	if err != nil {
 		log.Println("ID取得失敗")
 	}
-
 	userService := service.UserService{}
 	userService.DeleteUser(int(id))
-
 	c.Redirect(302, "/user/list")
 }
